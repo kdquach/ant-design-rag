@@ -1,0 +1,104 @@
+[
+  {
+    "question": "Table component có hỗ trợ pagination không?",
+    "expectedComponent": "table"
+  },
+  {
+    "question": "Làm sao style riêng cho từng cell trong Table?",
+    "expectedComponent": "table"
+  },
+  {
+    "question": "Table có hỗ trợ sort theo nhiều cột cùng lúc không?",
+    "expectedComponent": "table"
+  },
+  {
+    "question": "Làm sao custom validate cho Form.Item?",
+    "expectedComponent": "form"
+  },
+  {
+    "question": "Form có hỗ trợ validate bất đồng bộ (async) không?",
+    "expectedComponent": "form"
+  },
+  {
+    "question": "Modal có cách nào để tùy chỉnh footer không?",
+    "expectedComponent": "modal"
+  },
+  {
+    "question": "Làm sao đóng Modal khi click ra ngoài?",
+    "expectedComponent": "modal"
+  },
+  { "question": "Button có mấy loại type?", "expectedComponent": "button" },
+  {
+    "question": "Làm sao tạo Button loading state?",
+    "expectedComponent": "button"
+  },
+  {
+    "question": "Select có hỗ trợ tìm kiếm (search) không?",
+    "expectedComponent": "select"
+  },
+  {
+    "question": "Làm sao cho phép chọn nhiều giá trị trong Select?",
+    "expectedComponent": "select"
+  },
+  {
+    "question": "DatePicker có hỗ trợ chọn khoảng thời gian không?",
+    "expectedComponent": "date-picker"
+  },
+  {
+    "question": "Upload component giới hạn kích thước file như thế nào?",
+    "expectedComponent": "upload"
+  },
+  {
+    "question": "Làm sao custom validate message hiển thị lỗi upload?",
+    "expectedComponent": "upload"
+  },
+  { "question": "Drawer khác gì với Modal?", "expectedComponent": "drawer" },
+  {
+    "question": "Tooltip có thể đổi vị trí hiển thị không?",
+    "expectedComponent": "tooltip"
+  },
+  {
+    "question": "Làm sao custom theme màu sắc cho toàn bộ Ant Design?",
+    "expectedComponent": "config-provider"
+  },
+  {
+    "question": "Notification khác gì với Message component?",
+    "expectedComponent": "notification"
+  },
+  {
+    "question": "Card có hỗ trợ loading skeleton không?",
+    "expectedComponent": "card"
+  },
+  {
+    "question": "Steps component dùng để làm gì?",
+    "expectedComponent": "steps"
+  },
+  {
+    "question": "Làm sao custom validate trigger khi nào (onChange hay onBlur) trong Form?",
+    "expectedComponent": "form"
+  },
+  {
+    "question": "Pagination có hỗ trợ nhảy nhanh tới trang bất kỳ không?",
+    "expectedComponent": "pagination"
+  },
+  {
+    "question": "Cascader dùng để chọn dữ liệu dạng gì?",
+    "expectedComponent": "cascader"
+  },
+  {
+    "question": "Ant Design có hỗ trợ dark mode không?",
+    "expectedComponent": "config-provider"
+  },
+  {
+    "question": "Table có hỗ trợ export ra Excel trực tiếp không?",
+    "expectedComponent": "___NONE___"
+  },
+  {
+    "question": "Button có hỗ trợ gắn animation confetti khi click không?",
+    "expectedComponent": "___NONE___"
+  },
+  {
+    "question": "Ant Design có component nào để tích hợp thanh toán online không?",
+    "expectedComponent": "___NONE___"
+  }
+]

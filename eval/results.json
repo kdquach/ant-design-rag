@@ -1,0 +1,298 @@
+{
+  "accuracy": "91.7",
+  "results": [
+    {
+      "question": "Table component có hỗ trợ pagination không?",
+      "expectedComponent": "table",
+      "retrieved": [
+        "table",
+        "pagination",
+        "pagination",
+        "pagination",
+        "table"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Làm sao style riêng cho từng cell trong Table?",
+      "expectedComponent": "table",
+      "retrieved": [
+        "table",
+        "table",
+        "divider",
+        "table",
+        "table"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Table có hỗ trợ sort theo nhiều cột cùng lúc không?",
+      "expectedComponent": "table",
+      "retrieved": [
+        "table",
+        "list",
+        "table",
+        "table",
+        "table"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Làm sao custom validate cho Form.Item?",
+      "expectedComponent": "form",
+      "retrieved": [
+        "form",
+        "form",
+        "form",
+        "form",
+        "switch"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Form có hỗ trợ validate bất đồng bộ (async) không?",
+      "expectedComponent": "form",
+      "retrieved": [
+        "form",
+        "form",
+        "form",
+        "form",
+        "form"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Modal có cách nào để tùy chỉnh footer không?",
+      "expectedComponent": "modal",
+      "retrieved": [
+        "modal",
+        "modal",
+        "qr-code",
+        "qr-code",
+        "input"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Làm sao đóng Modal khi click ra ngoài?",
+      "expectedComponent": "modal",
+      "retrieved": [
+        "upload",
+        "radio",
+        "rate",
+        "modal",
+        "list"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Button có mấy loại type?",
+      "expectedComponent": "button",
+      "retrieved": [
+        "button",
+        "button",
+        "float-button",
+        "float-button",
+        "button"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Làm sao tạo Button loading state?",
+      "expectedComponent": "button",
+      "retrieved": [
+        "button",
+        "button",
+        "spin",
+        "float-button",
+        "config-provider"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Select có hỗ trợ tìm kiếm (search) không?",
+      "expectedComponent": "select",
+      "retrieved": [
+        "select",
+        "input",
+        "select",
+        "radio",
+        "rate"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Làm sao cho phép chọn nhiều giá trị trong Select?",
+      "expectedComponent": "select",
+      "retrieved": [
+        "select",
+        "auto-complete",
+        "radio",
+        "select",
+        "breadcrumb"
+      ],
+      "correct": true
+    },
+    {
+      "question": "DatePicker có hỗ trợ chọn khoảng thời gian không?",
+      "expectedComponent": "date-picker",
+      "retrieved": [
+        "date-picker",
+        "date-picker",
+        "time-picker",
+        "date-picker",
+        "date-picker"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Upload component giới hạn kích thước file như thế nào?",
+      "expectedComponent": "upload",
+      "retrieved": [
+        "upload",
+        "upload",
+        "upload",
+        "upload",
+        "image"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Làm sao custom validate message hiển thị lỗi upload?",
+      "expectedComponent": "upload",
+      "retrieved": [
+        "upload",
+        "upload",
+        "watermark",
+        "qr-code",
+        "upload"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Drawer khác gì với Modal?",
+      "expectedComponent": "drawer",
+      "retrieved": [
+        "drawer",
+        "drawer",
+        "modal",
+        "drawer",
+        "drawer"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Tooltip có thể đổi vị trí hiển thị không?",
+      "expectedComponent": "tooltip",
+      "retrieved": [
+        "tooltip",
+        "tooltip",
+        "input",
+        "tooltip",
+        "tooltip"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Làm sao custom theme màu sắc cho toàn bộ Ant Design?",
+      "expectedComponent": "config-provider",
+      "retrieved": [
+        "grid",
+        "button",
+        "menu",
+        "icon",
+        "empty"
+      ],
+      "correct": false
+    },
+    {
+      "question": "Notification khác gì với Message component?",
+      "expectedComponent": "notification",
+      "retrieved": [
+        "message",
+        "notification",
+        "message",
+        "notification",
+        "alert"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Card có hỗ trợ loading skeleton không?",
+      "expectedComponent": "card",
+      "retrieved": [
+        "skeleton",
+        "skeleton",
+        "card",
+        "card",
+        "skeleton"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Steps component dùng để làm gì?",
+      "expectedComponent": "steps",
+      "retrieved": [
+        "steps",
+        "steps",
+        "steps",
+        "steps",
+        "_util"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Làm sao custom validate trigger khi nào (onChange hay onBlur) trong Form?",
+      "expectedComponent": "form",
+      "retrieved": [
+        "form",
+        "form",
+        "form",
+        "form",
+        "input-number"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Pagination có hỗ trợ nhảy nhanh tới trang bất kỳ không?",
+      "expectedComponent": "pagination",
+      "retrieved": [
+        "pagination",
+        "pagination",
+        "pagination",
+        "pagination",
+        "list"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Cascader dùng để chọn dữ liệu dạng gì?",
+      "expectedComponent": "cascader",
+      "retrieved": [
+        "cascader",
+        "cascader",
+        "cascader",
+        "rate",
+        "qr-code"
+      ],
+      "correct": true
+    },
+    {
+      "question": "Ant Design có hỗ trợ dark mode không?",
+      "expectedComponent": "config-provider",
+      "retrieved": [
+        "grid",
+        "button",
+        "icon",
+        "avatar",
+        "tabs"
+      ],
+      "correct": false
+    }
+  ],
+  "trapQuestions": [
+    "Table có hỗ trợ export ra Excel trực tiếp không?",
+    "Button có hỗ trợ gắn animation confetti khi click không?",
+    "Ant Design có component nào để tích hợp thanh toán online không?"
+  ]
+}

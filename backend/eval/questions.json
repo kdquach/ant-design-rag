@@ -1,0 +1,19 @@
+[
+  {
+    "question": "Table component có hỗ trợ pagination không?",
+    "expectedComponent": "table"
+  },
+  {
+    "question": "Làm sao custom validate cho Form.Item?",
+    "expectedComponent": "form"
+  },
+  {
+    "question": "Modal có cách nào để tùy chỉnh footer không?",
+    "expectedComponent": "modal"
+  },
+  { "question": "Button có mấy loại type?", "expectedComponent": "button" },
+  {
+    "question": "Làm sao style riêng cho từng cell trong Table?",
+    "expectedComponent": "table"
+  }
+]
