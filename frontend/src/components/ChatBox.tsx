@@ -25,7 +25,8 @@ export default function ChatBox() {
     setLoading(true);
 
     try {
-      const res = await axios.post("/api/chat", { question });
+      const API_URL = import.meta.env.VITE_API_URL || "";
+      const res = await axios.post(`${API_URL}/api/chat`, { question });
       setMessages((prev) => [
         ...prev,
         {
