@@ -1,5 +1,5 @@
 import ChatBox from "./components/ChatBox";
-import "antd/dist/reset.css";
+import "./theme.css";
 
 function App() {
   return <ChatBox />;
