@@ -1,63 +1,67 @@
-# Ant Design RAG Assistant
+# Ant Design Docs Reference — RAG Assistant
 
-Trợ lý hỏi-đáp dựa trên tài liệu chính thức của Ant Design, sử dụng kiến trúc RAG (Retrieval-Augmented Generation) để trả lời câu hỏi kèm trích dẫn nguồn, thay vì dựa vào kiến thức có sẵn của LLM (dễ lỗi thời hoặc bịa đặt).
+A Retrieval-Augmented Generation (RAG) assistant that answers questions about Ant Design components, grounded entirely in the official documentation, with inline source citations for every answer.
 
-## Kiến trúc
+**Live demo:** https://ant-design-rag.netlify.app
+**Repository:** https://github.com/kdquach/ant-design-rag
 
-- **Ingestion**: crawl docs Ant Design → chunk theo section → embed local (`all-MiniLM-L6-v2`, 384 chiều, chạy qua `@xenova/transformers`, không tốn phí API) → lưu vào PostgreSQL (Neon) với extension `pgvector`
-- **Retrieval**: embed câu hỏi, tìm top-5 chunk gần nhất bằng cosine similarity (exact search, xem lý do không dùng ANN index ở phần dưới)
-- **Generation**: ghép context vào prompt, gọi Gemini 3.6 Flash để sinh câu trả lời kèm nguồn trích dẫn, với chỉ dẫn rõ ràng để từ chối trả lời khi thông tin không có trong tài liệu
+> Note: the backend runs on a free-tier host and may sleep after inactivity — the first request after idle time can take 30–50 seconds to respond.
 
-## Kết quả đánh giá
+## Why RAG instead of a plain LLM chatbot
 
-**Retrieval accuracy**: **91.7%** (22/24 câu hỏi thực tế về các component phổ biến — Table, Form, Modal, Button, Select, DatePicker, Upload, Drawer, Tooltip, Notification, Card, Steps, Pagination, Cascader...), đo bằng tỷ lệ component đúng nằm trong top-5 kết quả retrieval.
+A general-purpose LLM either doesn't know about a specific, narrow documentation set, or has to be fed the entire document on every request — expensive and still prone to hallucination. This project narrows the domain to a single, well-understood source (Ant Design's component docs), indexes it once, and retrieves only the relevant passages per query — keeping token cost constant regardless of document size and letting every answer cite exactly which docs it drew from.
 
-2 câu sai đều liên quan đến chủ đề theme/dark mode (`"custom theme màu sắc"`, `"Ant Design có hỗ trợ dark mode không?"`) — nguyên nhân nhiều khả năng là khoảng cách từ vựng giữa cách người dùng hỏi và cách docs viết (docs dùng thuật ngữ kỹ thuật như "algorithm", "token" thay vì "dark mode"), một giới hạn tự nhiên của embedding search theo similarity thuần túy, không phải lỗi hệ thống.
+## Architecture
 
-**Chống hallucination**: test với 3 câu hỏi về tính năng không tồn tại trong Ant Design (export Excel trực tiếp từ Table, animation confetti trên Button, tích hợp thanh toán online) — hệ thống từ chối đúng cả 3/3 câu, không bịa ra câu trả lời sai, dù retrieval vẫn trả về các component có liên quan gần nhất làm ngữ cảnh.
+- **Ingestion**: clone Ant Design's docs → chunk by component/section (not fixed character length) → embed each chunk locally with `all-MiniLM-L6-v2` via `@xenova/transformers` (no API cost) → store in PostgreSQL (Neon) with the `pgvector` extension
+- **Retrieval**: embed the incoming question, run an exact cosine-similarity search (see note on indexing below) to fetch the top-5 relevant chunks
+- **Generation**: inject the retrieved chunks into a prompt sent to Gemini 3.6 Flash, instructed to answer only from the provided context and explicitly decline when the answer isn't present
+- **Frontend**: React + Vite, styled as a documentation-reference reading experience rather than a chat-bubble UI — IBM Plex Sans/Mono for interface chrome, Source Serif 4 for answer prose
 
-## Một vấn đề kỹ thuật đáng chú ý đã gặp và cách giải quyết
+## Evaluation results
 
-Trong quá trình đo retrieval accuracy, kết quả ban đầu dao động bất thường (từ 40% xuống 20%) dù không thay đổi dữ liệu hay logic embedding. Debug bằng cách thêm log số dòng trả về ở từng query, phát hiện: với cùng `LIMIT 5`, có truy vấn trả về 0 dòng, có truy vấn trả về đủ 5 — bất thường vì bảng có 423 dòng, không có lý do hợp lệ để trả về ít hơn 5.
+**Retrieval accuracy: 91.7%** (22/24) on a hand-written test set spanning Table, Form, Modal, Button, Select, DatePicker, Upload, Drawer, Tooltip, Notification, Card, Steps, Pagination, Cascader, and others — measured as whether the expected component appears in the top-5 retrieved chunks.
 
-Nguyên nhân: index `ivfflat` trên cột `embedding` là loại index **xấp xỉ** (approximate nearest neighbor) — nó chia dữ liệu thành các cụm (lists) và mặc định chỉ quét 1 cụm gần nhất thay vì toàn bộ bảng. Với dataset nhỏ (423 dòng), số cụm được tạo ra không cân đối với lượng dữ liệu, khiến nhiều truy vấn rơi vào cụm gần như trống.
+The 2 misses both involved theming/dark-mode questions, where the phrasing gap between how users ask ("dark mode", "custom colors") and how the docs are written (design tokens, algorithms) reduced embedding similarity — a known limitation of pure semantic search, not a system bug.
 
-**Giải pháp**: bỏ index `ivfflat`, để PostgreSQL quét tuần tự (sequential scan) toàn bộ bảng khi tính khoảng cách vector. Với quy mô dữ liệu này, cách này vừa **nhanh hơn** vừa **chính xác tuyệt đối** so với ANN index — index xấp xỉ chỉ thật sự có lợi khi dữ liệu đạt quy mô hàng chục nghìn dòng trở lên, nơi việc đánh đổi độ chính xác lấy tốc độ mới có ý nghĩa.
+**Hallucination guard: 3/3.** Tested with questions about features that don't exist in Ant Design (direct Excel export from Table, click-confetti animation on Button, built-in payment integration). The system correctly declined all three instead of fabricating an answer.
 
-Bài học rút ra: hiểu rõ trade-off của các kỹ thuật tối ưu (index, approximate search...) quan trọng hơn việc áp dụng chúng theo mặc định — một tối ưu hóa "chuẩn" trên giấy có thể phản tác dụng nếu áp sai vào quy mô dữ liệu thực tế.
+## A debugging note worth reading
+
+Early retrieval accuracy measurements were inconsistent (40% → 20% across runs) with no changes to the underlying data. Adding row-count logging around each query revealed that identical `LIMIT 5` queries were returning anywhere from 0 to 5 rows — with only 423 rows in the table, that should never happen with an exact search.
+
+The cause: the `ivfflat` index on the embedding column is an **approximate** nearest-neighbor index — it partitions the table into clusters and by default searches only the single nearest one. On a dataset this small, the clustering was poorly balanced, so many queries landed in a near-empty cluster.
+
+**Fix:** dropped the index entirely. At 423 rows, a sequential scan with exact distance calculation is both faster and 100% accurate — approximate indexes only pay off at a scale (tens of thousands of rows+) where the accuracy/speed trade-off actually matters. Lesson: understanding *when* an optimization applies matters more than applying it by default.
 
 ## Tech stack
 
 - **Backend**: Node.js, Express, TypeScript
 - **Database**: PostgreSQL + pgvector (Neon, serverless)
-- **Embedding**: `all-MiniLM-L6-v2` qua `@xenova/transformers` (chạy local, miễn phí)
-- **LLM**: Gemini 3.6 Flash (Interactions API)
-- **Frontend**: React, Vite, Ant Design
+- **Embeddings**: `all-MiniLM-L6-v2` via `@xenova/transformers` (local, free)
+- **LLM**: Gemini 3.6 Flash
+- **Frontend**: React, Vite, TypeScript
+- **Deployment**: Render (backend), Netlify (frontend)
 
-## Chạy thử
+## Running locally
 
-\`\`\`bash
-
-# Clone repo
-
-git clone <repo-url>
+```bash
+git clone https://github.com/kdquach/ant-design-rag
 cd ant-design-rag
 
-# Cài backend
-
+# Backend
 cd backend
 npm install
-cp .env.example .env # điền DATABASE_URL và GEMINI_API_KEY
-
-# Nạp dữ liệu (chạy 1 lần)
-
-npx tsx src/ingestion/embed-and-seed.ts
-
-# Chạy server
-
+cp .env.example .env   # fill in DATABASE_URL and GEMINI_API_KEY
+npx tsx src/ingestion/embed-and-seed.ts   # one-time data load
 npx tsx src/index.ts
 
-# Chạy eval (tùy chọn)
+# Frontend (separate terminal)
+cd ../frontend
+npm install
+npm run dev
 
+# Evaluation (optional)
+cd ../backend
 npx tsx ../eval/run-eval.ts
-\`\`\`
+```
